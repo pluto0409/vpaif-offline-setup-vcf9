@@ -86,7 +86,7 @@ sudo mv "$DOWNLOAD_DIR/govc" /usr/bin/govc
 # 4. Fetch & Install VCF CLI (Direct Download)
 echo "[4/6] Downloading VCF 9 CLI from Artifactory..."
 # Download to a temporary filename to ensure we handle it correctly
-wget -c --user="vcfuser" --password="sYrma0f@qur" "$VCF_CLI_URL" -O "$DOWNLOAD_DIR/vcf-cli.tar.gz"
+wget -c --user="$PRIVATE_REPO_USERNAME" --password="$PRIVATE_REPO_PASSWORD" "$VCF_CLI_URL" -O "$DOWNLOAD_DIR/vcf-cli.tar.gz"
 
 # Extract and move VCF CLI
 sudo tar -xvf "$DOWNLOAD_DIR/vcf-cli.tar.gz" -C /usr/bin
@@ -95,7 +95,7 @@ sudo mv /usr/bin/vcf-cli-linux_amd64 /usr/bin/vcf
 # 5. Fetch & Install Offline Plugins (Direct Download)
 echo "[5/6] Downloading VCF Offline Plugin Bundle..."
 PLUGIN_BUNDLE="$DOWNLOAD_DIR/plugins.tar.gz"
-wget -c --user="vcfuser" --password="sYrma0f@qur" "$VCF_PLUGIN_BUNDLE_URL" -O "$PLUGIN_BUNDLE"
+wget -c --user="$PRIVATE_REPO_USERNAME" --password="$PRIVATE_REPO_PASSWORD" "$VCF_PLUGIN_BUNDLE_URL" -O "$PLUGIN_BUNDLE"
 
 #echo "Extracting Plugin Bundle for Local Install..."
 BUNDLE_EXTRACT_DIR="$DOWNLOAD_DIR/vcf_plugins_extracted"
