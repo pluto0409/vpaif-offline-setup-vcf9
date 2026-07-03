@@ -3,7 +3,7 @@
         "nvcr.io/nvidia/gpu-operator:v25.10.1",
 		"nvcr.io/nvidia/cloud-native/k8s-driver-manager:v0.9.1",
         "nvcr.io/nvidia/cloud-native/gpu-operator-validator:v25.3.4",
-		"nvcr.io/nvidia/driver:580.159.03-ubuntu24.04",
+		"nvcr.io/nvidia/vgpu/vgpu-guest-driver-7:580.159.03-ubuntu24.04",
         "nvcr.io/nvidia/k8s/container-toolkit:v1.18.1",
         "nvcr.io/nvidia/k8s-device-plugin:v0.18.1",
         "nvcr.io/nvidia/cloud-native/k8s-mig-manager:v0.13.1",
