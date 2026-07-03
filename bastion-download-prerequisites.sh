@@ -63,9 +63,6 @@ for file in "$DOWNLOAD_DIR_YML"/*.y*ml; do
     file_name="${full_filename%.y*ml}"   
     image=$(yq -P '(.|select(.kind == "Package").spec.template.spec.fetch[].imgpkgBundle.image)' "$file")
 
-    echo Download to VCF Add-on $STD_PACKAGE
-    vcf imgpkg copy -b "$STD_PACKAGE" --to-tar "$DOWNLOAD_DIR_TAR"/"$file_name".tar --cosign-signatures
-
     # ==============================================================================
     # 🔥 [추가] depot.kube-system.svc 주소가 포함되어 있으면 이 파일은 건너뜁니다.
     # ==============================================================================
@@ -92,6 +89,10 @@ for file in "$DOWNLOAD_DIR_YML"/*.y*ml; do
         a=$newurl yq -P '(.|select(.kind == "Package").spec.template.spec.fetch[].imgpkgBundle.image = env(a))' -i "$file"
         echo $a
     fi
+
+    echo Download to VCF Add-on $STD_PACKAGE
+    vcf imgpkg copy -b "$STD_PACKAGE" --to-tar "$DOWNLOAD_DIR_TAR"/"$file_name".tar --cosign-signatures
+
 done
 
 # --- Sync to Admin Host ---
