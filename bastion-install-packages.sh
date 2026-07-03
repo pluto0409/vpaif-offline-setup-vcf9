@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==============================================================================
-# VCF 9 & Private AI - Air Gap Preparation (Direct Artifactory Method)
+# VCF 9.1 & Private AI - Air Gap Preparation (Direct Artifactory Method)
 # ==============================================================================
 # FIXED:
 # 1. Corrected VCF CLI binary detection to handle 'vcf-cli-linux_amd64' naming.
@@ -12,14 +12,14 @@ set -o pipefail
 source ./config/env.config
 
 # --- Configuration ---
-# Direct URLs for VCF 9.0.0 (Verified from KB 415112 / User Testing)
-VCF_CLI_URL="https://packages.broadcom.com/artifactory/vcf-distro/vcf-cli/linux/amd64/v9.0.1/vcf-cli.tar.gz"
-VCF_PLUGIN_BUNDLE_URL="https://packages.broadcom.com/artifactory/vcf-distro/vcf-cli-plugins/v9.0.0/linux/amd64/plugins.tar.gz"
+# Direct URLs for VCF 9.1.0 (Verified from KB 415112 / User Testing)
+VCF_CLI_URL="https://pluto8487.synology.me/artifactory/vcf-distro/vcf-cli/linux/amd64/v9.1.0/VCF-Consumption-CLI-Linux_AMD64-9.1.0.0.25296329.tar.gz"
+VCF_PLUGIN_BUNDLE_URL="https://pluto8487.synology.me/artifactory/vcf-distro/vcf-cli-plugins/v9.1.0/linux/amd64/VCF-Consumption-CLI-PluginBundle-Linux_AMD64-9.1.0.0300.25509668.tar.gz"
 
 DOWNLOAD_DIR="$DOWNLOAD_DIR_BIN"
 mkdir -p "$DOWNLOAD_DIR"
 
-echo "=== Starting VCF 9 Air-Gap Preparation ==="
+echo "=== Starting VCF 9.1 Air-Gap Preparation ==="
 
 # 1. Update System & Install Dependencies
 echo "[1/6] Updating package list and installing base dependencies..."
@@ -43,7 +43,7 @@ if ! command -v docker &> /dev/null; then
 
     sudo apt-get update
     sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-    
+
     sudo usermod -aG docker $USER
     echo "Docker installed."
 else
@@ -80,13 +80,13 @@ echo "[4/6] Downloading govc from github..."
 wget -c https://github.com/vmware/govmomi/releases/download/v0.52.0/govc_Linux_x86_64.tar.gz -O "$DOWNLOAD_DIR/govc_Linux_x86_64.tar.gz"
 
 # Extract and move govc CLI
-sudo tar -xvf "$DOWNLOAD_DIR/govc_Linux_x86_64.tar.gz"
+sudo tar -xvf "$DOWNLOAD_DIR/govc_Linux_x86_64.tar.gz" -C "$DOWNLOAD_DIR"
 sudo mv "$DOWNLOAD_DIR/govc" /usr/bin/govc
 
 # 4. Fetch & Install VCF CLI (Direct Download)
 echo "[4/6] Downloading VCF 9 CLI from Artifactory..."
 # Download to a temporary filename to ensure we handle it correctly
-wget -c "$VCF_CLI_URL" -O "$DOWNLOAD_DIR/vcf-cli.tar.gz"
+wget -c --user="vcfuser" --password="sYrma0f@qur" "$VCF_CLI_URL" -O "$DOWNLOAD_DIR/vcf-cli.tar.gz"
 
 # Extract and move VCF CLI
 sudo tar -xvf "$DOWNLOAD_DIR/vcf-cli.tar.gz" -C /usr/bin
@@ -95,9 +95,9 @@ sudo mv /usr/bin/vcf-cli-linux_amd64 /usr/bin/vcf
 # 5. Fetch & Install Offline Plugins (Direct Download)
 echo "[5/6] Downloading VCF Offline Plugin Bundle..."
 PLUGIN_BUNDLE="$DOWNLOAD_DIR/plugins.tar.gz"
-wget -c "$VCF_PLUGIN_BUNDLE_URL" -O "$PLUGIN_BUNDLE"
+wget -c --user="vcfuser" --password="sYrma0f@qur" "$VCF_PLUGIN_BUNDLE_URL" -O "$PLUGIN_BUNDLE"
 
-echo "Extracting Plugin Bundle for Local Install..."
+#echo "Extracting Plugin Bundle for Local Install..."
 BUNDLE_EXTRACT_DIR="$DOWNLOAD_DIR/vcf_plugins_extracted"
 rm -rf "$BUNDLE_EXTRACT_DIR"
 mkdir -p "$BUNDLE_EXTRACT_DIR"
